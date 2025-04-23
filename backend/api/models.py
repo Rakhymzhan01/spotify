@@ -22,13 +22,13 @@ class Track(models.Model):
     title = models.CharField(max_length=100)
     artist = models.ForeignKey(Artist, on_delete=models.CASCADE, related_name='tracks')
     album = models.ForeignKey(Album, on_delete=models.CASCADE, related_name='tracks')
-    audio_file = models.URLField()  # URL to audio file
+    audio_file = models.URLField(blank=True, null=True)  # Allow null values
     duration = models.DurationField()
     track_number = models.IntegerField()
     
     def __str__(self):
         return f"{self.title} - {self.artist.name}"
-
+    
 class PlaylistManager(models.Manager):
     def get_user_playlists(self, user):
         return self.filter(user=user)

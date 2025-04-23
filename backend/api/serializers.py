@@ -50,7 +50,7 @@ class AlbumSerializer(serializers.ModelSerializer):
 class TrackSerializer(serializers.ModelSerializer):
     class Meta:
         model = Track
-        fields = '__all__'
+        fields = ['id', 'title', 'artist', 'album', 'audio_file', 'duration', 'track_number']
 
 class PlaylistSerializer(serializers.ModelSerializer):
     tracks_count = serializers.SerializerMethodField()

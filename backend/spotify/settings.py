@@ -69,6 +69,11 @@ SIMPLE_JWT = {
     'REFRESH_TOKEN_LIFETIME': timedelta(days=7),
 }
 
+# Spotify API Settings
+SPOTIFY_CLIENT_ID = 'cd4087dc7709425b8e6314e0b97f9257'
+SPOTIFY_CLIENT_SECRET = '8b5b6bd7401344e2a71ebcf2c5b071b3'
+SPOTIFY_REDIRECT_URI = 'http://127.0.0.1:8000/callback'
+
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
