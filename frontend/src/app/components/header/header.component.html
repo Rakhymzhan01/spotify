@@ -1,0 +1,29 @@
+<!-- header.component.html -->
+<header class="app-header">
+    <div class="logo">
+      <a routerLink="/">
+        <img src="assets/logo.png" alt="Spotify Clone">
+        <span>Music App</span>
+      </a>
+    </div>
+    
+    <nav class="main-nav">
+      <ul>
+        <li><a routerLink="/" routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}">Home</a></li>
+        <li><a routerLink="/search" routerLinkActive="active">Search</a></li>
+        <li *ngIf="isLoggedIn"><a routerLink="/library" routerLinkActive="active">Your Library</a></li>
+      </ul>
+    </nav>
+    
+    <div class="user-controls">
+      <div *ngIf="isLoggedIn" class="user-menu">
+        <span class="username">{{ username }}</span>
+        <button (click)="logout()" class="logout-btn">Logout</button>
+      </div>
+      
+      <div *ngIf="!isLoggedIn" class="auth-buttons">
+        <a routerLink="/login" class="login-btn">Login</a>
+        <a routerLink="/register" class="register-btn">Register</a>
+      </div>
+    </div>
+  </header>

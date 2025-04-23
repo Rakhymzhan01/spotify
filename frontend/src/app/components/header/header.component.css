@@ -1,0 +1,103 @@
+.app-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    background-color: rgba(0, 0, 0, 0.8);
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 60px;
+    padding: 0 24px;
+    z-index: 1000;
+  }
+  
+  .logo {
+    display: flex;
+    align-items: center;
+  }
+  
+  .logo a {
+    display: flex;
+    align-items: center;
+    color: var(--text-primary);
+    font-weight: 700;
+    font-size: 1.4rem;
+  }
+  
+  .logo img {
+    height: 32px;
+    margin-right: 8px;
+  }
+  
+  .main-nav ul {
+    display: flex;
+    list-style: none;
+  }
+  
+  .main-nav li {
+    margin: 0 15px;
+  }
+  
+  .main-nav a {
+    color: var(--text-secondary);
+    font-weight: 600;
+    transition: color 0.2s;
+  }
+  
+  .main-nav a:hover,
+  .main-nav a.active {
+    color: var(--text-primary);
+  }
+  
+  .user-controls {
+    display: flex;
+    align-items: center;
+  }
+  
+  .user-menu {
+    display: flex;
+    align-items: center;
+  }
+  
+  .username {
+    margin-right: 10px;
+    font-weight: 600;
+  }
+  
+  .logout-btn {
+    background-color: transparent;
+    border: 1px solid var(--text-secondary);
+  }
+  
+  .auth-buttons {
+    display: flex;
+    align-items: center;
+  }
+  
+  .login-btn {
+    margin-right: 10px;
+    background-color: transparent;
+    color: var(--text-primary);
+    padding: 8px 16px;
+    border-radius: 500px;
+    font-weight: 600;
+  }
+  
+  .register-btn {
+    background-color: var(--text-primary);
+    color: var(--background-color);
+    padding: 8px 16px;
+    border-radius: 500px;
+    font-weight: 600;
+  }
+  
+  @media (max-width: 768px) {
+    .app-header {
+      padding: 0 16px;
+    }
+    
+    .main-nav {
+      display: none;
+    }
+  }

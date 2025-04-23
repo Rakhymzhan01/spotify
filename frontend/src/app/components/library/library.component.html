@@ -1,0 +1,75 @@
+<div class="library-container">
+    <h1>Your Library</h1>
+    
+    <div *ngIf="loading" class="loading">
+      Loading your library...
+    </div>
+    
+    <section class="playlists-section">
+      <div class="section-header">
+        <h2>Your Playlists</h2>
+        <button (click)="toggleCreateForm()">Create Playlist</button>
+      </div>
+      
+      <div *ngIf="showCreateForm" class="create-playlist-form">
+        <h3>Create New Playlist</h3>
+        <div class="form-group">
+          <label for="playlistName">Name</label>
+          <input 
+            type="text" 
+            id="playlistName" 
+            [(ngModel)]="newPlaylist.name" 
+            placeholder="Playlist Name" 
+            required>
+        </div>
+        
+        <div class="form-group">
+          <label for="playlistDescription">Description</label>
+          <textarea 
+            id="playlistDescription" 
+            [(ngModel)]="newPlaylist.description" 
+            placeholder="Playlist Description"></textarea>
+        </div>
+        
+        <div class="form-actions">
+          <button (click)="createPlaylist()">Save</button>
+          <button (click)="toggleCreateForm()">Cancel</button>
+        </div>
+      </div>
+      
+      <div class="playlists-grid">
+        <div *ngFor="let playlist of userPlaylists" class="playlist-card">
+          <img [src]="playlist.cover_image || 'assets/default-playlist.png'" [alt]="playlist.name">
+          <h3>{{ playlist.name }}</h3>
+          <p>{{ playlist.song_count }} songs</p>
+          <a [routerLink]="['/playlist', playlist.id]">View Details</a>
+        </div>
+        
+        <div *ngIf="userPlaylists.length === 0 && !loading" class="empty-state">
+          <p>You don't have any playlists yet.</p>
+        </div>
+      </div>
+    </section>
+    
+    <section class="favorites-section">
+      <h2>Favorite Songs</h2>
+      
+      <div class="songs-list">
+        <div *ngFor="let favorite of favorites" class="song-item">
+          <img [src]="favorite.song.album_cover || 'assets/default-album.png'" [alt]="favorite.song.title">
+          <div class="song-info">
+            <h3>{{ favorite.song.title }}</h3>
+            <p>{{ favorite.song.artist_name }}</p>
+          </div>
+          <div class="song-actions">
+            <button (click)="playSong(favorite.song)">Play</button>
+            <button (click)="removeFromFavorites(favorite)" class="remove-btn">Remove</button>
+          </div>
+        </div>
+        
+        <div *ngIf="favorites.length === 0 && !loading" class="empty-state">
+          <p>You don't have any favorite songs yet.</p>
+        </div>
+      </div>
+    </section>
+  </div>

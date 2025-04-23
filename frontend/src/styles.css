@@ -1,1 +1,155 @@
-/* You can add global styles to this file, and also import other style files */
+/* Global Styles for Spotify Clone */
+:root {
+    --primary-color: #1DB954;
+    --primary-dark: #1AA34A;
+    --background-color: #121212;
+    --surface-color: #181818;
+    --surface-light: #282828;
+    --text-primary: #FFFFFF;
+    --text-secondary: #B3B3B3;
+    --text-tertiary: #6C6C6C;
+    --error-color: #F15D5D;
+  }
+  
+  * {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+  }
+  
+  body {
+    font-family: 'Circular', 'Helvetica Neue', Arial, sans-serif;
+    background-color: var(--background-color);
+    color: var(--text-primary);
+    line-height: 1.5;
+  }
+  
+  .container {
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+  }
+  
+  .content {
+    flex: 1;
+    padding: 20px;
+    margin-top: 60px;
+    margin-bottom: 90px;
+  }
+  
+  button {
+    cursor: pointer;
+    background-color: var(--primary-color);
+    color: var(--text-primary);
+    border: none;
+    border-radius: 500px;
+    padding: 8px 16px;
+    font-weight: 600;
+    transition: background-color 0.2s;
+  }
+  
+  button:hover {
+    background-color: var(--primary-dark);
+  }
+  
+  button.secondary {
+    background-color: transparent;
+    border: 1px solid var(--text-secondary);
+    color: var(--text-primary);
+  }
+  
+  button.secondary:hover {
+    border-color: var(--text-primary);
+  }
+  
+  /* Form Styles */
+  .form-group {
+    margin-bottom: 20px;
+  }
+  
+  .form-group label {
+    display: block;
+    margin-bottom: 8px;
+    color: var(--text-secondary);
+  }
+  
+  .form-group input,
+  .form-group textarea {
+    width: 100%;
+    padding: 12px;
+    background-color: var(--surface-light);
+    border: 1px solid var(--text-tertiary);
+    border-radius: 4px;
+    color: var(--text-primary);
+  }
+  
+  .form-group input:focus,
+  .form-group textarea:focus {
+    outline: none;
+    border-color: var(--primary-color);
+  }
+  
+  /* Card Styles */
+  .card {
+    background-color: var(--surface-color);
+    border-radius: 6px;
+    padding: 16px;
+    transition: background-color 0.3s;
+  }
+  
+  .card:hover {
+    background-color: var(--surface-light);
+  }
+  
+  /* Grid Layout */
+  .grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    gap: 20px;
+  }
+  
+  /* Error Message */
+  .error-message {
+    color: var(--error-color);
+    margin: 10px 0;
+    padding: 10px;
+    background-color: rgba(241, 93, 93, 0.1);
+    border-radius: 4px;
+  }
+  
+  /* Loading State */
+  .loading {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 20px;
+    color: var(--text-secondary);
+  }
+  
+  /* Links */
+  a {
+    color: var(--text-secondary);
+    text-decoration: none;
+    transition: color 0.2s;
+  }
+  
+  a:hover {
+    color: var(--text-primary);
+  }
+  
+  a.active {
+    color: var(--primary-color);
+  }
+  
+  /* Responsive utilities */
+  @media (max-width: 768px) {
+    .grid {
+      grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+    }
+  }
+  
+  @media (max-width: 480px) {
+    .grid {
+      grid-template-columns: 1fr;
+    }
+  }

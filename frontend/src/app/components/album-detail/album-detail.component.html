@@ -1,0 +1,61 @@
+<!-- album-detail.component.html -->
+<div class="album-detail-container">
+    <div *ngIf="loading" class="loading">
+      Loading album...
+    </div>
+    
+    <div *ngIf="error" class="error-message">
+      {{ error }}
+    </div>
+    
+    <div *ngIf="album && !loading" class="album-content">
+      <div class="album-header">
+        <img [src]="album.cover_image || 'assets/default-album.png'" [alt]="album.title" class="album-cover">
+        
+        <div class="album-info">
+          <span class="album-type">Album</span>
+          <h1>{{ album.title }}</h1>
+          <div class="album-meta">
+            <img [src]="album.artist_image || 'assets/default-artist.png'" class="artist-image"> 
+            <span class="artist-name">{{ album.artist_name }}</span> • 
+            <span class="year">{{ album.release_year }}</span> • 
+            <span class="songs-count">{{ album.songs?.length || 0 }} songs</span>
+          </div>
+        </div>
+      </div>
+      
+      <div class="album-actions">
+        <button class="play-all-btn" (click)="playSong(album.songs[0])">
+          <i class="fa fa-play"></i> Play
+        </button>
+      </div>
+      
+      <div class="songs-list">
+        <table>
+          <thead>
+            <tr>
+              <th>#</th>
+              <th>Title</th>
+              <th>Duration</th>
+              <th>Actions</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let song of album.songs; let i = index">
+              <td>{{ i + 1 }}</td>
+              <td>{{ song.title }}</td>
+              <td>{{ song.duration }}</td>
+              <td class="actions">
+                <button (click)="playSong(song)" class="play-btn">
+                  <i class="fa fa-play"></i>
+                </button>
+                <button (click)="addToFavorites(song.id)" class="favorite-btn">
+                  <i class="fa fa-heart"></i>
+                </button>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>

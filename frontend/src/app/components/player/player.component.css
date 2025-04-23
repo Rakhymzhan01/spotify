@@ -1,0 +1,146 @@
+.player-container {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    background-color: var(--surface-color);
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: 90px;
+    padding: 0 16px;
+    border-top: 1px solid rgba(255, 255, 255, 0.1);
+    z-index: 1000;
+  }
+  
+  .song-info {
+    display: flex;
+    align-items: center;
+    width: 30%;
+  }
+  
+  .song-info img {
+    width: 56px;
+    height: 56px;
+    object-fit: cover;
+    margin-right: 12px;
+  }
+  
+  .song-details h3 {
+    font-size: 14px;
+    margin: 0;
+  }
+  
+  .song-details p {
+    font-size: 12px;
+    color: var(--text-secondary);
+    margin: 4px 0 0;
+  }
+  
+  .player-controls {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 40%;
+  }
+  
+  .control-buttons {
+    display: flex;
+    align-items: center;
+    margin-bottom: 8px;
+  }
+  
+  .control-buttons button {
+    background-color: transparent;
+    border: none;
+    padding: 8px;
+    margin: 0 8px;
+    font-size: 16px;
+  }
+  
+  .control-buttons .play-btn {
+    font-size: 32px;
+  }
+  
+  .progress-container {
+    display: flex;
+    align-items: center;
+    width: 100%;
+  }
+  
+  .time-elapsed,
+  .time-remaining {
+    font-size: 12px;
+    color: var(--text-secondary);
+    width: 40px;
+    text-align: center;
+  }
+  
+  .progress-slider {
+    flex: 1;
+    margin: 0 8px;
+    appearance: none;
+    height: 4px;
+    border-radius: 2px;
+    background: rgba(255, 255, 255, 0.3);
+    outline: none;
+  }
+  
+  .progress-slider::-webkit-slider-thumb {
+    appearance: none;
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+    background: var(--text-primary);
+    cursor: pointer;
+  }
+  
+  .volume-controls {
+    display: flex;
+    align-items: center;
+    width: 30%;
+    justify-content: flex-end;
+  }
+  
+  .volume-controls i {
+    margin-right: 8px;
+    font-size: 16px;
+    color: var(--text-secondary);
+  }
+  
+  .volume-slider {
+    width: 100px;
+    appearance: none;
+    height: 4px;
+    border-radius: 2px;
+    background: rgba(255, 255, 255, 0.3);
+    outline: none;
+  }
+  
+  .volume-slider::-webkit-slider-thumb {
+    appearance: none;
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+    background: var(--text-primary);
+    cursor: pointer;
+  }
+  
+  @media (max-width: 768px) {
+    .player-container {
+      flex-direction: column;
+      height: auto;
+      padding: 12px 16px;
+    }
+    
+    .song-info,
+    .player-controls,
+    .volume-controls {
+      width: 100%;
+      margin-bottom: 12px;
+    }
+    
+    .volume-controls {
+      justify-content: flex-start;
+    }
+  }

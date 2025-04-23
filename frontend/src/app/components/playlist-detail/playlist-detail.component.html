@@ -1,0 +1,100 @@
+<!-- playlist-detail.component.html -->
+<div class="playlist-detail-container">
+    <div *ngIf="loading" class="loading">
+      Loading playlist...
+    </div>
+    
+    <div *ngIf="error" class="error-message">
+      {{ error }}
+    </div>
+    
+    <div *ngIf="playlist && !loading" class="playlist-content">
+      <div class="playlist-header">
+        <img [src]="playlist.cover_image || 'assets/default-playlist.png'" [alt]="playlist.name" class="playlist-cover">
+        
+        <div class="playlist-info">
+          <span class="playlist-type">Playlist</span>
+          
+          <div *ngIf="!isEditing">
+            <h1>{{ playlist.name }}</h1>
+            <p class="description">{{ playlist.description }}</p>
+            <div class="playlist-meta">
+              <span class="creator-name">Created by {{ playlist.creator }}</span> • 
+              <span class="songs-count">{{ playlist.songs?.length || 0 }} songs</span>
+            </div>
+          </div>
+          
+          <div *ngIf="isEditing" class="edit-form">
+            <div class="form-group">
+              <label for="playlistName">Name</label>
+              <input 
+                type="text" 
+                id="playlistName" 
+                [(ngModel)]="editablePlaylist.name" 
+                required>
+            </div>
+            
+            <div class="form-group">
+              <label for="playlistDescription">Description</label>
+              <textarea 
+                id="playlistDescription" 
+                [(ngModel)]="editablePlaylist.description"></textarea>
+            </div>
+            
+            <div class="form-actions">
+              <button (click)="savePlaylist()" class="save-btn">Save</button>
+              <button (click)="toggleEdit()" class="cancel-btn">Cancel</button>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <div class="playlist-actions">
+        <button class="play-all-btn" (click)="playSong(playlist.songs[0])">
+          <i class="fa fa-play"></i> Play
+        </button>
+        
+        <button *ngIf="!isEditing" (click)="toggleEdit()" class="edit-btn">
+          <i class="fa fa-pencil"></i> Edit
+        </button>
+        
+        <button *ngIf="!isEditing" (click)="deletePlaylist()" class="delete-btn">
+          <i class="fa fa-trash"></i> Delete
+        </button>
+      </div>
+      
+      <div class="songs-list">
+        <table *ngIf="playlist.songs && playlist.songs.length > 0">
+          <thead>
+            <tr>
+              <th>#</th>
+              <th>Title</th>
+              <th>Artist</th>
+              <th>Duration</th>
+              <th>Actions</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let song of playlist.songs; let i = index">
+              <td>{{ i + 1 }}</td>
+              <td>{{ song.title }}</td>
+              <td>{{ song.artist_name }}</td>
+              <td>{{ song.duration }}</td>
+              <td class="actions">
+                <button (click)="playSong(song)" class="play-btn">
+                  <i class="fa fa-play"></i>
+                </button>
+                <button (click)="removeSong(song.id)" class="remove-btn">
+                  <i class="fa fa-times"></i>
+                </button>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+        
+        <div *ngIf="!playlist.songs || playlist.songs.length === 0" class="empty-state">
+          <p>This playlist is empty. Add some songs to get started.</p>
+        </div>
+      </div>
+    </div>
+  </div>
