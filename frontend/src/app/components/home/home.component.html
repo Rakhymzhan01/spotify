@@ -1,0 +1,52 @@
+<div class="container mt-4">
+    <div *ngIf="loading" class="text-center my-5">
+      <div class="spinner-border" role="status">
+        <span class="visually-hidden">Loading...</span>
+      </div>
+    </div>
+  
+    <div *ngIf="error" class="alert alert-danger">
+      {{ error }}
+    </div>
+  
+    <div *ngIf="!loading && !error">
+      <!-- Hero Section -->
+      <div class="p-5 mb-4 bg-dark text-white rounded">
+        <div class="container-fluid py-5">
+          <h1 class="display-5 fw-bold">Discover New Music</h1>
+          <p class="col-md-8 fs-4">Listen to the latest songs, create your own playlists, and find your new favorite artists.</p>
+          <a routerLink="/artists" class="btn btn-success btn-lg">Browse Artists</a>
+        </div>
+      </div>
+  
+      <!-- Featured Artists -->
+      <h2 class="mt-5 mb-4">Featured Artists</h2>
+      <div class="row">
+        <div class="col-md-3 mb-4" *ngFor="let artist of featuredArtists">
+          <div class="card h-100">
+            <img [src]="artist.image_url || 'https://via.placeholder.com/300'" class="card-img-top" alt="{{ artist.name }}">
+            <div class="card-body">
+              <h5 class="card-title">{{ artist.name }}</h5>
+              <p class="card-text" *ngIf="artist.bio">{{ artist.bio | slice:0:100 }}...</p>
+              <a [routerLink]="['/artists', artist.id]" class="btn btn-sm btn-outline-primary">View Artist</a>
+            </div>
+          </div>
+        </div>
+      </div>
+  
+      <!-- New Releases -->
+      <h2 class="mt-5 mb-4">New Releases</h2>
+      <div class="row">
+        <div class="col-md-3 mb-4" *ngFor="let album of newReleases">
+          <div class="card h-100">
+            <img [src]="album.cover_image_url || 'https://via.placeholder.com/300'" class="card-img-top" alt="{{ album.title }}">
+            <div class="card-body">
+              <h5 class="card-title">{{ album.title }}</h5>
+              <p class="card-text">{{ album.artist_name }}</p>
+              <a [routerLink]="['/albums', album.id]" class="btn btn-sm btn-outline-primary">View Album</a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>

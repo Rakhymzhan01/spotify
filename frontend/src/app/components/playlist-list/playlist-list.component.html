@@ -1,0 +1,89 @@
+<div class="container mt-4">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+      <h1>My Playlists</h1>
+      <button class="btn btn-primary" (click)="toggleCreateForm()">
+        <i class="bi bi-plus-circle me-2"></i>{{ showCreateForm ? 'Cancel' : 'Create Playlist' }}
+      </button>
+    </div>
+    
+    <div *ngIf="showCreateForm" class="card mb-4">
+      <div class="card-header bg-primary text-white">
+        <h5 class="mb-0">Create New Playlist</h5>
+      </div>
+      <div class="card-body">
+        <form [formGroup]="playlistForm" (ngSubmit)="createPlaylist()">
+          <div class="mb-3">
+            <label for="title" class="form-label">Title</label>
+            <input 
+              type="text" 
+              id="title" 
+              formControlName="title" 
+              class="form-control" 
+              [ngClass]="{ 'is-invalid': playlistForm.get('title')?.invalid && playlistForm.get('title')?.touched }"
+              placeholder="Playlist title"
+              [(ngModel)]="playlistForm.value.title"
+            >
+            <div class="invalid-feedback" *ngIf="playlistForm.get('title')?.invalid && playlistForm.get('title')?.touched">
+              Title is required
+            </div>
+          </div>
+          
+          <div class="mb-3">
+            <label for="description" class="form-label">Description (optional)</label>
+            <textarea 
+              id="description" 
+              formControlName="description" 
+              class="form-control" 
+              rows="3"
+              placeholder="Describe your playlist"
+              [(ngModel)]="playlistForm.value.description"
+            ></textarea>
+          </div>
+          
+          <button type="submit" class="btn btn-primary" [disabled]="playlistForm.invalid || submitting">
+            <span *ngIf="submitting" class="spinner-border spinner-border-sm me-1"></span>
+            Create Playlist
+          </button>
+        </form>
+      </div>
+    </div>
+  
+    <div *ngIf="loading" class="text-center my-5">
+      <div class="spinner-border" role="status">
+        <span class="visually-hidden">Loading...</span>
+      </div>
+    </div>
+  
+    <div *ngIf="error" class="alert alert-danger">
+      {{ error }}
+    </div>
+  
+    <div *ngIf="!loading && !error">
+      <div *ngIf="playlists.length === 0" class="alert alert-info">
+        You don't have any playlists yet. Create one to get started!
+      </div>
+  
+      <div class="row">
+        <div class="col-md-4 mb-4" *ngFor="let playlist of playlists">
+          <div class="card h-100">
+            <div class="card-body">
+              <div class="d-flex justify-content-between">
+                <h5 class="card-title">{{ playlist.title }}</h5>
+                <button class="btn btn-sm btn-outline-danger" (click)="deletePlaylist(playlist.id, $event)">
+                  <i class="bi bi-trash"></i>
+                </button>
+              </div>
+              <p class="card-text text-muted">{{ playlist.tracks_count }} tracks</p>
+              <p class="card-text" *ngIf="playlist.description">{{ playlist.description }}</p>
+              <a [routerLink]="['/playlists', playlist.id]" class="btn btn-outline-primary">
+                View Playlist
+              </a>
+            </div>
+            <div class="card-footer text-muted small">
+              Updated: {{ playlist.updated_at | date }}
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
