@@ -1,0 +1,71 @@
+<div class="container mt-4">
+    <div *ngIf="loading" class="text-center my-5">
+      <div class="spinner-border" role="status">
+        <span class="visually-hidden">Loading...</span>
+      </div>
+    </div>
+  
+    <div *ngIf="error" class="alert alert-danger">
+      {{ error }}
+    </div>
+  
+    <div *ngIf="!loading && !error && album">
+      <!-- Album Header -->
+      <div class="row mb-5">
+        <div class="col-md-4">
+          <img [src]="album.cover_image_url || 'https://via.placeholder.com/400'" class="img-fluid rounded" alt="{{ album.title }}">
+        </div>
+        <div class="col-md-8">
+          <h1 class="mb-2">{{ album.title }}</h1>
+          <h5 class="text-muted mb-3">{{ album.artist_name }}</h5>
+          <p class="mb-3">Released: {{ album.release_date | date }}</p>
+          <a routerLink="/albums" class="btn btn-outline-secondary">&laquo; Back to Albums</a>
+        </div>
+      </div>
+  
+      <!-- Tracks -->
+      <h2 class="mb-4">Tracks</h2>
+      <div *ngIf="tracks.length === 0" class="alert alert-info">
+        No tracks found for this album.
+      </div>
+  
+      <div class="table-responsive">
+        <table class="table table-hover">
+          <thead>
+            <tr>
+              <th>#</th>
+              <th>Title</th>
+              <th>Duration</th>
+              <th>Actions</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let track of tracks">
+              <td>{{ track.track_number }}</td>
+              <td>{{ track.title }}</td>
+              <td>{{ formatDuration(track.duration) }}</td>
+              <td>
+                <button class="btn btn-sm btn-success me-2" (click)="playTrack(track)" [disabled]="!track.audio_file">
+                  <i class="bi bi-play-fill"></i> Play
+                </button>
+                
+                <div class="btn-group" *ngIf="isAuthenticated$ | async">
+                  <button class="btn btn-sm btn-outline-primary dropdown-toggle" type="button" data-bs-toggle="dropdown">
+                    Add to Playlist
+                  </button>
+                  <ul class="dropdown-menu">
+                    <li *ngIf="playlists.length === 0"><span class="dropdown-item disabled">No playlists</span></li>
+                    <li *ngFor="let playlist of playlists">
+                      <a class="dropdown-item" href="javascript:void(0);" (click)="selectedPlaylistId = playlist.id; addToPlaylist(track.id)">
+                        {{ playlist.title }}
+                      </a> 
+                    </li>
+                  </ul>
+                </div>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>

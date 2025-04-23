@@ -1,0 +1,116 @@
+<div class="container mt-4">
+    <div *ngIf="loading" class="text-center my-5">
+      <div class="spinner-border" role="status">
+        <span class="visually-hidden">Loading...</span>
+      </div>
+    </div>
+  
+    <div *ngIf="error" class="alert alert-danger">
+      {{ error }}
+    </div>
+  
+    <div *ngIf="!loading && !error && playlist">
+      <!-- Playlist Header -->
+      <div class="card mb-4">
+        <div class="card-body">
+          <div *ngIf="!editMode" class="d-flex justify-content-between align-items-center">
+            <div>
+              <h1 class="mb-2">{{ playlist.title }}</h1>
+              <p class="text-muted mb-2" *ngIf="playlist.description">{{ playlist.description }}</p>
+              <p class="mb-0"><small>Created by: {{ playlist.username }}</small></p>
+            </div>
+            <div>
+              <button class="btn btn-outline-primary me-2" (click)="toggleEditMode()">
+                <i class="bi bi-pencil me-1"></i> Edit
+              </button>
+              <button class="btn btn-outline-danger" (click)="deletePlaylist()">
+                <i class="bi bi-trash me-1"></i> Delete
+              </button>
+            </div>
+          </div>
+  
+          <div *ngIf="editMode">
+            <form [formGroup]="playlistForm" (ngSubmit)="updatePlaylist()">
+              <div class="mb-3">
+                <label for="title" class="form-label">Title</label>
+                <input 
+                  type="text" 
+                  id="title" 
+                  formControlName="title" 
+                  class="form-control" 
+                  [ngClass]="{ 'is-invalid': playlistForm.get('title')?.invalid && playlistForm.get('title')?.touched }"
+                  [(ngModel)]="playlistForm.value.title"
+                >
+                <div class="invalid-feedback" *ngIf="playlistForm.get('title')?.invalid && playlistForm.get('title')?.touched">
+                  Title is required
+                </div>
+              </div>
+              
+              <div class="mb-3">
+                <label for="description" class="form-label">Description (optional)</label>
+                <textarea 
+                  id="description" 
+                  formControlName="description" 
+                  class="form-control" 
+                  rows="3"
+                  [(ngModel)]="playlistForm.value.description"
+                ></textarea>
+              </div>
+              
+              <div>
+                <button type="submit" class="btn btn-primary me-2" [disabled]="playlistForm.invalid || submitting">
+                  <span *ngIf="submitting" class="spinner-border spinner-border-sm me-1"></span>
+                  Save Changes
+                </button>
+                <button type="button" class="btn btn-outline-secondary" (click)="toggleEditMode()">
+                  Cancel
+                </button>
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+  
+      <!-- Tracks -->
+      <div class="d-flex justify-content-between align-items-center mb-3">
+        <h2>Tracks</h2>
+        <a routerLink="/playlists" class="btn btn-outline-secondary">
+          <i class="bi bi-arrow-left me-1"></i> Back to Playlists
+        </a>
+      </div>
+  
+      <div *ngIf="playlist.tracks?.length === 0" class="alert alert-info">
+        This playlist doesn't have any tracks yet. Add some from album pages!
+      </div>
+  
+      <div class="table-responsive" *ngIf="playlist.tracks?.length > 0">
+        <table class="table table-hover">
+          <thead>
+            <tr>
+              <th>Title</th>
+              <th>Artist</th>
+              <th>Album</th>
+              <th>Duration</th>
+              <th>Actions</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let track of playlist.tracks">
+              <td>{{ track.title }}</td>
+              <td>{{ track.artist_name || 'Unknown Artist' }}</td>
+              <td>{{ track.album_title || 'Unknown Album' }}</td>
+              <td>{{ formatDuration(track.duration) }}</td>
+              <td>
+                <button class="btn btn-sm btn-success me-2" (click)="playTrack(track)" [disabled]="!track.audio_file">
+                  <i class="bi bi-play-fill"></i> Play
+                </button>
+                <button class="btn btn-sm btn-outline-danger" (click)="removeTrackFromPlaylist(track.id)">
+                  <i class="bi bi-x-circle"></i> Remove
+                </button>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>

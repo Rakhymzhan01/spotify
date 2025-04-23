@@ -1,0 +1,50 @@
+<div class="container mt-4">
+    <h1 class="mb-4">Albums</h1>
+    
+    <div class="row mb-4">
+      <div class="col-md-6">
+        <div class="input-group">
+          <input 
+            type="text" 
+            class="form-control" 
+            placeholder="Search albums by title or artist..." 
+            [(ngModel)]="searchTerm"
+            (keyup)="search()"
+          >
+          <button class="btn btn-outline-secondary" type="button" (click)="search()">
+            Search
+          </button>
+        </div>
+      </div>
+    </div>
+  
+    <div *ngIf="loading" class="text-center my-5">
+      <div class="spinner-border" role="status">
+        <span class="visually-hidden">Loading...</span>
+      </div>
+    </div>
+  
+    <div *ngIf="error" class="alert alert-danger">
+      {{ error }}
+    </div>
+  
+    <div *ngIf="!loading && !error">
+      <div *ngIf="filteredAlbums.length === 0" class="alert alert-info">
+        No albums found matching your search.
+      </div>
+  
+      <div class="row">
+        <div class="col-md-3 mb-4" *ngFor="let album of filteredAlbums">
+          <div class="card h-100">
+            <img [src]="album.cover_image_url || 'https://via.placeholder.com/300'" class="card-img-top" alt="{{ album.title }}">
+            <div class="card-body">
+              <h5 class="card-title">{{ album.title }}</h5>
+              <p class="card-text">{{ album.artist_name }}</p>
+              <p class="card-text small">Released: {{ album.release_date | date }}</p>
+              <a [routerLink]="['/albums', album.id]" class="btn btn-primary">View Tracks</a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
