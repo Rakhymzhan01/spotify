@@ -46,8 +46,8 @@
               <td>{{ formatDuration(track.duration) }}</td>
               <td>
                 <button class="btn btn-sm btn-success me-2" (click)="playTrack(track)" [disabled]="!track.audio_file">
-                  <i class="bi bi-play-fill"></i> Play
-                </button>
+                    <i class="bi bi-play-fill"></i> Play
+                  </button>
                 
                 <div class="btn-group" *ngIf="isAuthenticated$ | async">
                   <button class="btn btn-sm btn-outline-primary dropdown-toggle" type="button" data-bs-toggle="dropdown">
