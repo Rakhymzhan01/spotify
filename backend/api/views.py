@@ -61,11 +61,17 @@ class PlaylistView(APIView):
         return Response(serializer.data)
     
     def post(self, request):
+        print("Incoming data:", request.data)  # Debug what's being received
         serializer = PlaylistSerializer(data=request.data)
+        print("Serializer initial data:", serializer.initial_data)  # Debug
+        
         if serializer.is_valid():
+            print("Valid data:", serializer.validated_data)  # Debug
             serializer.save(user=request.user)
-            return Response(serializer.data, status=status.HTTP_201_CREATED)
-        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+            return Response(serializer.data, status=201)
+        
+        print("Serializer errors:", serializer.errors)  # Critical for debugging
+        return Response(serializer.errors, status=400)
 
 class PlaylistDetailView(APIView):
     permission_classes = [IsAuthenticated]

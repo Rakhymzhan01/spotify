@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { CommonModule, SlicePipe } from '@angular/common';
+import { CommonModule } from '@angular/common';
 import { RouterLink } from '@angular/router';
 import { FormsModule } from '@angular/forms';
 import { ArtistService } from '../../services/artist.service';
@@ -12,11 +12,9 @@ import { ArtistService } from '../../services/artist.service';
   imports: [
     CommonModule,
     RouterLink,
-    FormsModule,
-    SlicePipe
+    FormsModule
   ]
 })
-
 export class ArtistListComponent implements OnInit {
   artists: any[] = [];
   loading = true;
