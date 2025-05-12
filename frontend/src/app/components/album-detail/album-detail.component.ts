@@ -36,9 +36,12 @@ export class AlbumDetailComponent implements OnInit {
     private playlistService: PlaylistService
   ) {
     this.isAuthenticated$ = this.authService.isAuthenticated();
+    console.log('AlbumDetailComponent initialized');
+    console.log('PlayerService available:', !!playerService);
   }
 
   ngOnInit(): void {
+    console.log('Tracks data:', this.tracks);
     this.route.paramMap.subscribe(params => {
       const albumId = Number(params.get('id'));
       if (albumId) {
@@ -81,6 +84,7 @@ export class AlbumDetailComponent implements OnInit {
   }
 
   playTrack(track: any): void {
+    console.log('Track play button clicked', track);
     this.playerService.play(track);
   }
   

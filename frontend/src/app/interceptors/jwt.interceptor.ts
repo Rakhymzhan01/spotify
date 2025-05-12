@@ -7,6 +7,7 @@ import { catchError, switchMap, throwError } from 'rxjs';
 export const jwtInterceptor: HttpInterceptorFn = (req, next) => {
   const authService = inject(AuthService);
   
+  
   // Skip authentication requests
   if (req.url.includes('/token')) {
     return next(req);
@@ -44,5 +45,6 @@ export const jwtInterceptor: HttpInterceptorFn = (req, next) => {
       }
       return throwError(() => error);
     })
+    
   );
 };

@@ -6,12 +6,13 @@ import { Observable } from 'rxjs';
   providedIn: 'root'
 })
 export class PlaylistService {
+  // Make sure the URL ends with exactly one slash
   private apiUrl = 'http://localhost:8000/api/playlists';
 
   constructor(private http: HttpClient) { }
 
   getPlaylists(): Observable<any> {
-    return this.http.get(this.apiUrl);
+    return this.http.get(`${this.apiUrl}/`);
   }
 
   getPlaylist(id: number): Observable<any> {
@@ -19,7 +20,9 @@ export class PlaylistService {
   }
 
   createPlaylist(title: string, description: string = ''): Observable<any> {
-    return this.http.post(this.apiUrl, { title, description });
+    console.log('Creating playlist:', {title, description});
+    // Make sure to use exactly one slash
+    return this.http.post(`${this.apiUrl}/`, { title, description });
   }
 
   updatePlaylist(id: number, data: any): Observable<any> {

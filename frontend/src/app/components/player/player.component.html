@@ -1,11 +1,11 @@
-<div class="fixed-bottom bg-dark text-white p-2" *ngIf="currentTrack">
+<div class="fixed-bottom bg-dark text-white p-3" *ngIf="currentTrack">
     <div class="container">
       <div class="row align-items-center">
-        <!-- Track Info -->
+        <!-- Информация о треке -->
         <div class="col-md-4">
           <div class="d-flex align-items-center">
             <div class="me-3">
-              <button class="btn btn-sm btn-outline-light rounded-circle" (click)="togglePlayPause()">
+              <button class="btn btn-sm btn-light rounded-circle" (click)="togglePlayPause()">
                 <i class="bi" [ngClass]="isPlaying ? 'bi-pause-fill' : 'bi-play-fill'"></i>
               </button>
             </div>
@@ -16,7 +16,7 @@
           </div>
         </div>
         
-        <!-- Progress Bar -->
+        <!-- Ползунок проигрывания -->
         <div class="col-md-4">
           <div class="d-flex align-items-center">
             <small class="me-2">{{ formatTime(currentTime) }}</small>
@@ -33,13 +33,25 @@
           </div>
         </div>
         
-        <!-- Volume Control -->
+        <!-- Управление громкостью и дополнительные кнопки -->
         <div class="col-md-4">
           <div class="d-flex align-items-center justify-content-end">
+            <button class="btn btn-sm btn-outline-light me-2" (click)="previousTrack()" [disabled]="!hasPreviousTrack">
+              <i class="bi bi-skip-backward-fill"></i>
+            </button>
+            
+            <button class="btn btn-sm btn-outline-light me-2" (click)="togglePlayPause()">
+              <i class="bi" [ngClass]="isPlaying ? 'bi-pause-fill' : 'bi-play-fill'"></i>
+            </button>
+            
+            <button class="btn btn-sm btn-outline-light me-4" (click)="nextTrack()" [disabled]="!hasNextTrack">
+              <i class="bi bi-skip-forward-fill"></i>
+            </button>
+            
             <i class="bi bi-volume-down me-2"></i>
             <input 
               type="range" 
-              class="form-range w-50" 
+              class="form-range w-25" 
               min="0" 
               max="100" 
               step="1" 
@@ -47,9 +59,6 @@
               (input)="setVolume()"
             >
             <i class="bi bi-volume-up ms-2"></i>
-            <button class="btn btn-sm btn-outline-light ms-3" (click)="stop()">
-              <i class="bi bi-stop-fill"></i>
-            </button>
           </div>
         </div>
       </div>

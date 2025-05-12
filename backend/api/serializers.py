@@ -58,6 +58,9 @@ class PlaylistSerializer(serializers.ModelSerializer):
     class Meta:
         model = Playlist
         fields = ['id', 'title', 'description', 'user', 'tracks_count', 'created_at', 'updated_at']
+        read_only_fields = ['user']
+    
+    description = serializers.CharField(allow_null=True, required=False)
     
     def get_tracks_count(self, obj):
         return obj.tracks.count()

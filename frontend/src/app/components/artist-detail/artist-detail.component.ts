@@ -17,43 +17,41 @@ import { Observable } from 'rxjs';
   imports: [
     CommonModule,
     RouterLink,
+    DatePipe
   ]
 })
 export class ArtistDetailComponent implements OnInit {
   artist: any = null;
   albums: any[] = [];
+  albumTracks: {[albumId: number]: any[]} = {}; // Track lists by album ID
   loading = true;
   error = '';
-  album: any = null; // Add this to fix template errors
-  selectedPlaylistId: number | null = null;
+  isAuthenticated$: Observable<boolean>;
   playlists: any[] = [];
-  tracks: any[] = []; // Add this for missing property
-  isAuthenticated$: Observable<boolean>; // Add this for missing property
-  
+
   constructor(
     private route: ActivatedRoute,
     private artistService: ArtistService,
     private albumService: AlbumService,
     private playerService: PlayerService,
     private playlistService: PlaylistService,
-    private authService: AuthService // Add auth service
+    private authService: AuthService
   ) {
-    // Initialize the isAuthenticated$ Observable
     this.isAuthenticated$ = this.authService.isAuthenticated();
   }
 
   ngOnInit(): void {
+    // Load user's playlists if authenticated
+    this.isAuthenticated$.subscribe(isAuth => {
+      if (isAuth) {
+        this.loadPlaylists();
+      }
+    });
+
     this.route.paramMap.subscribe(params => {
       const artistId = Number(params.get('id'));
       if (artistId) {
         this.loadArtistDetails(artistId);
-      }
-    });
-    
-    // Load playlists if authenticated
-    this.isAuthenticated$.subscribe(isAuth => {
-      if (isAuth) {
-        this.loadPlaylists();
       }
     });
   }
@@ -64,31 +62,16 @@ export class ArtistDetailComponent implements OnInit {
       next: (artist) => {
         this.artist = artist;
         
-        // Set this.album for compatibility with template
-        this.album = {
-          title: artist.name,
-          artist_name: artist.name,
-          cover_image_url: artist.image_url,
-          release_date: new Date() // Placeholder date
-        };
-        
-        // Load albums and tracks
+        // Now get albums by this artist
         this.albumService.getAlbums().subscribe({
           next: (allAlbums) => {
+            // Filter albums by artist
             this.albums = allAlbums.filter((album: any) => album.artist === artistId);
             
-            // Load tracks from these albums
-            if (this.albums.length > 0) {
-              // For simplicity, just get tracks from the first album
-              this.albumService.getAlbum(this.albums[0].id).subscribe({
-                next: (albumDetail) => {
-                  this.tracks = albumDetail.tracks || [];
-                  this.loading = false;
-                }
-              });
-            } else {
-              this.loading = false;
-            }
+            // Load tracks for each album
+            this.loadAlbumTracks();
+            
+            this.loading = false;
           },
           error: (err) => {
             this.error = 'Failed to load albums';
@@ -103,17 +86,33 @@ export class ArtistDetailComponent implements OnInit {
     });
   }
   
+  loadAlbumTracks(): void {
+    // For each album, get its tracks
+    this.albums.forEach(album => {
+      this.albumService.getAlbum(album.id).subscribe({
+        next: (albumDetail) => {
+          this.albumTracks[album.id] = albumDetail.tracks;
+          console.log(`Loaded ${albumDetail.tracks.length} tracks for album ${album.id}`);
+        },
+        error: (err) => {
+          console.error(`Failed to load tracks for album ${album.id}`, err);
+        }
+      });
+    });
+  }
+  
   loadPlaylists(): void {
     this.playlistService.getPlaylists().subscribe({
       next: (playlists) => {
         this.playlists = playlists;
+        console.log('Loaded playlists:', playlists);
       },
       error: (err) => {
         console.error('Failed to load playlists', err);
       }
     });
   }
-
+  
   formatDuration(duration: string): string {
     if (!duration) return '0:00';
     
@@ -129,26 +128,28 @@ export class ArtistDetailComponent implements OnInit {
         return `${minutes}:${seconds.toString().padStart(2, '0')}`;
       }
     }
-    
     return duration;
   }
 
   playTrack(track: any): void {
+    console.log('Playing track:', track);
+    if (!track.audio_file) {
+      alert('This track has no audio preview available');
+      return;
+    }
     this.playerService.play(track);
   }
-
-  addToPlaylist(trackId: number): void {
-    if (this.selectedPlaylistId) {
-      this.playlistService.addTrackToPlaylist(this.selectedPlaylistId, trackId).subscribe({
-        next: () => {
-          alert('Track added to playlist!');
-          this.selectedPlaylistId = null;
-        },
-        error: (err) => {
-          alert('Failed to add track to playlist');
-          console.error(err);
-        }
-      });
-    }
+  
+  addToPlaylist(trackId: number, playlistId: number): void {
+    console.log('Adding track', trackId, 'to playlist', playlistId);
+    this.playlistService.addTrackToPlaylist(playlistId, trackId).subscribe({
+      next: () => {
+        alert('Track added to playlist!');
+      },
+      error: (err) => {
+        alert('Failed to add track to playlist');
+        console.error(err);
+      }
+    });
   }
 }
